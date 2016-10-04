@@ -21,7 +21,7 @@ kube::bootstrap::bootstrap_daemon() {
 
   if kube::helpers::command_exists systemctl; then
     kube::bootstrap::restart_bootstrap_daemon_systemd
-  elif
+  else
   kube::log::status "Launching docker bootstrap..."
 
   docker daemon \
