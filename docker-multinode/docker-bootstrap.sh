@@ -122,10 +122,10 @@ kube::helpers::replace_mtu_bip(){
 
   # Assuming is a $SEARCH_FOR statement already, and we should append the options if they do not exist
   if [[ -z $(grep -- "--mtu=" $DOCKER_CONF) ]]; then
-    sed -e "s@$(grep "$SEARCH_FOR" $DOCKER_CONF)@$(grep "$SEARCH_FOR" $DOCKER_CONF) --mtu=/$/{FLANNEL_MTU/}@g" -i $DOCKER_CONF
+    sed -e "s@$(grep "$SEARCH_FOR" $DOCKER_CONF)@$(grep "$SEARCH_FOR" $DOCKER_CONF) --mtu=${FLANNEL_MTU}@g" -i $DOCKER_CONF
   fi
   if [[ -z $(grep -- "--bip=" $DOCKER_CONF) ]]; then
-    sed -e "s@$(grep "$SEARCH_FOR" $DOCKER_CONF)@$(grep "$SEARCH_FOR" $DOCKER_CONF) --bip=/$/{FLANNEL_SUBNET/}@g" -i $DOCKER_CONF
+    sed -e "s@$(grep "$SEARCH_FOR" $DOCKER_CONF)@$(grep "$SEARCH_FOR" $DOCKER_CONF) --bip=${FLANNEL_SUBNET}@g" -i $DOCKER_CONF
   fi
 
   # Finds "--mtu=????" and replaces with "--mtu=${FLANNEL_MTU}"

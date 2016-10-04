@@ -198,10 +198,10 @@ kube::multinode::start_flannel() {
     sleep 1
   done
 
-  source ${FLANNEL_SUBNET_DIR}/subnet.env
+#  source ${FLANNEL_SUBNET_DIR}/subnet.env
 
-  kube::log::status "FLANNEL_SUBNET is set to: ${FLANNEL_SUBNET}"
-  kube::log::status "FLANNEL_MTU is set to: ${FLANNEL_MTU}"
+#  kube::log::status "FLANNEL_SUBNET is set to: ${FLANNEL_SUBNET}"
+#  kube::log::status "FLANNEL_MTU is set to: ${FLANNEL_MTU}"
 }
 
 # Start kubelet first and then the master components as pods
