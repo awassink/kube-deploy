@@ -23,6 +23,8 @@ kube::bootstrap::bootstrap_daemon() {
 
   docker daemon \
     -H ${BOOTSTRAP_DOCKER_SOCK} \
+    --storage-driver=overlay \
+    --storage-opt dm.basesize=10G \
     -p /var/run/docker-bootstrap.pid \
     --iptables=false \
     --ip-masq=false \

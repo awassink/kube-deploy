@@ -77,6 +77,12 @@ kube::multinode::main(){
     CONTAINERIZED_FLAG=""
   fi
 
+  KUBE_CONFIG_DIR=/etc/kubernetes/manifests-multi
+
+  if [[ "${MASTER_IP}" == "localhost" ]]; then
+    MANIFEST_MOUNT="-v ${KUBE_CONFIG_DIR}:/etc/kubernetes/manifests-multi:ro"
+  fi
+
   KUBELET_MOUNTS="\
     ${ROOTFS_MOUNT} \
     -v /sys:/sys:rw \
@@ -84,6 +90,7 @@ kube::multinode::main(){
     -v /run:/run:rw \
     -v /var/lib/docker:/var/lib/docker:rw \
     ${KUBELET_MOUNT} \
+    ${MANIFEST_MOUNT} \
     -v /var/log/containers:/var/log/containers:rw"
 
   # Paths
@@ -97,6 +104,7 @@ kube::multinode::main(){
       --network-plugin=cni \
       --network-plugin-dir=/etc/cni/net.d"
   fi
+
 }
 
 # Ensure everything is OK, docker is running and we're root
@@ -198,6 +206,16 @@ kube::multinode::start_flannel() {
 kube::multinode::start_k8s_master() {
   kube::multinode::create_kubeconfig
   kube::log::status "Launching Kubernetes master components..."
+
+  if [[ ! -d ${KUBE_CONFIG_DIR} ]]; then
+    mkdir ${KUBE_CONFIG_DIR}
+  fi
+
+  if [[ ! -f ${KUBE_CONFIG_DIR}/master-multi.json ]]; then
+    cp master-multi.json ${KUBE_CONFIG_DIR}
+    cp kube-proxy.json ${KUBE_CONFIG_DIR}
+    cp addon-manager.json ${KUBE_CONFIG_DIR}
+  fi
 
   kube::multinode::make_shared_kubelet_dir
 
