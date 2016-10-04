@@ -60,7 +60,7 @@ kube::multinode::main(){
 
   TIMEOUT_FOR_SERVICES=${TIMEOUT_FOR_SERVICES:-20}
   USE_CNI=${USE_CNI:-"false"}
-  USE_CONTAINERIZED=${USE_CONTAINERIZED:-"false"}
+  USE_CONTAINERIZED=${USE_CONTAINERIZED:-"true"}
   CNI_ARGS=""
 
   BOOTSTRAP_DOCKER_SOCK="unix:///var/run/docker-bootstrap.sock"
