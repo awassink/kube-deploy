@@ -95,6 +95,7 @@ kube::multinode::main(){
 
   # Paths
   FLANNEL_SUBNET_DIR=${FLANNEL_SUBNET_DIR:-/run/flannel}
+  DOCKER_FLANNEL_DROPIN=${DOCKER_FLANNEL_DROPIN:-docker-service-flannel.conf}
 
   if [[ ${USE_CNI} == "true" ]]; then
 
