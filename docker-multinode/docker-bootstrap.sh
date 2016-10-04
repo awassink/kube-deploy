@@ -101,8 +101,12 @@ kube::bootstrap::restart_docker_systemd(){
 #  kube::multinode::delete_bridge docker0
 #  kube::multinode::delete_bridge docker0
 
-  if [[ ! -f /etc/systemd/system/docker.service.d/${DOCKER_FLANNEL_DROPIN} ]]; then
-    cp ${DOCKER_FLANNEL_DROPIN} /etc/systemd/system/docker.service.d
+  if [[ ! -d ${DOCKER_DROPIN_DIR} ]]; then
+    mkdir ${DOCKER_DROPIN_DIR}
+  fi
+
+  if [[ ! -f ${DOCKER_DROPIN_DIR}/${DOCKER_FLANNEL_DROPIN} ]]; then
+    cp ${DOCKER_FLANNEL_DROPIN} ${DOCKER_DROPIN_DIR}/
   fi
 
 
