@@ -7,7 +7,7 @@ Requires=docker-bootstrap.socket
 [Service]
 ExecStartPre=-rm -rf /run/flannel/subnet.env
 ExecStart=/usr/bin/docker daemon -H unix:///var/run/docker-bootstrap.sock -p /var/run/docker-bootstrap.pid --storage-driver=overlay --storage-opt dm.basesize=10G --iptables=false --ip-masq=false --bridge=none --graph=/var/lib/docker-bootstrap
-ExecStartPost=/bin/bash -c 'x=0; while [ "$x" -lt 10 ] && [ ! -e /run/flannel/subnet.env ] ; do sleep 1; x=$((x+1)); done'
+ExecStartPost=/bin/bash -c 'x=0; while [ "$x" -lt 20 ] && [ ! -e /run/flannel/subnet.env ] ; do sleep 1; x=$((x+1)); done'
 MountFlags=slave
 LimitNOFILE=1048576
 LimitNPROC=1048576
