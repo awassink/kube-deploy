@@ -19,6 +19,9 @@
 # Start a docker bootstrap for running etcd and flannel
 kube::bootstrap::bootstrap_daemon() {
 
+  if kube::helpers::command_exists systemctl; then
+    kube::bootstrap::restart_bootstrap_daemon_systemd
+  elif
   kube::log::status "Launching docker bootstrap..."
 
   docker daemon \
@@ -43,6 +46,18 @@ kube::bootstrap::bootstrap_daemon() {
     fi
     sleep 1
   done
+  fi
+}
+
+kube::bootstrap::restart_bootstrap_daemon_systemd(){
+
+  cp docker-bootstrap.socket /lib/systemd/system/
+  cp docker-bootstrap.service /lib/systemd/system/
+
+  systemctl daemon-reload
+  systemctl enable docker-bootstrap.socket
+  systemctl enable docker-bootstrap.service
+  systemctl restart docker-bootstrap.service
 }
 
 # Configure docker net settings, then restart it
@@ -104,10 +119,7 @@ kube::bootstrap::restart_docker_systemd(){
   if [[ ! -d ${DOCKER_DROPIN_DIR} ]]; then
     mkdir ${DOCKER_DROPIN_DIR}
   fi
-
-  if [[ ! -f ${DOCKER_DROPIN_DIR}/${DOCKER_FLANNEL_DROPIN} ]]; then
-    cp ${DOCKER_FLANNEL_DROPIN} ${DOCKER_DROPIN_DIR}/
-  fi
+  cp ${DOCKER_FLANNEL_DROPIN} ${DOCKER_DROPIN_DIR}/
 
 
   sed -i.bak 's/^\(MountFlags=\).*/\1shared/' ${DOCKER_CONF}
