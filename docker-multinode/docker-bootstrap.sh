@@ -51,6 +51,8 @@ kube::bootstrap::bootstrap_daemon() {
 
 kube::bootstrap::restart_bootstrap_daemon_systemd(){
 
+  kube::log::status "Restarting docker bootstrap..."
+
   cp docker-bootstrap.socket /lib/systemd/system/
   cp docker-bootstrap.service /lib/systemd/system/
 
