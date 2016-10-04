@@ -184,9 +184,7 @@ kube::multinode::start_flannel() {
     -v ${FLANNEL_SUBNET_DIR}:${FLANNEL_SUBNET_DIR} \
     quay.io/coreos/flannel:${FLANNEL_VERSION}-${ARCH} \
     /opt/bin/flanneld \
-      --etcd-endpoints=http://${MASTER_IP}:2379 \
-      --ip-masq="${FLANNEL_IPMASQ}" \
-      --iface="${IP_ADDRESS}"
+      --etcd-endpoints=http://${MASTER_IP}:2379
 
   # Wait for the flannel subnet.env file to be created instead of a timeout. This is faster and more reliable
   local SECONDS=0
