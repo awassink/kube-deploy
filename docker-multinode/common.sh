@@ -107,6 +107,8 @@ kube::multinode::main(){
       --network-plugin-dir=/etc/cni/net.d"
   fi
 
+  CLEAN_KUBELET=no
+
 }
 
 # Ensure everything is OK, docker is running and we're root
@@ -305,7 +307,11 @@ kube::multinode::turndown(){
   fi
 
   if [[ -d /var/lib/kubelet ]]; then
-    read -p "Do you want to clean /var/lib/kubelet? [Y/n] " clean_kubelet_dir
+    if [[ ${CLEAN_KUBELET} == "" ]]; then
+        read -p "Do you want to clean /var/lib/kubelet? [Y/n] " clean_kubelet_dir
+    else
+        clean_kubelet_dir=${CLEAN_KUBELET}
+    fi
 
     case $clean_kubelet_dir in
       [nN]*)
