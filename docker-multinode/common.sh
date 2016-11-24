@@ -57,6 +57,7 @@ kube::multinode::main(){
 
   DEFAULT_IP_ADDRESS=$(ip -o -4 addr list $(ip -o -4 route show to default | awk '{print $5}' | head -1) | awk '{print $4}' | cut -d/ -f1 | head -1)
   IP_ADDRESS=${IP_ADDRESS:-${DEFAULT_IP_ADDRESS}}
+  HOSTNAME=$(hostname)
 
   TIMEOUT_FOR_SERVICES=${TIMEOUT_FOR_SERVICES:-20}
   USE_CNI=${USE_CNI:-"false"}
@@ -127,6 +128,7 @@ kube::multinode::log_variables() {
   kube::log::status "MASTER_IP is set to: ${MASTER_IP}"
   kube::log::status "ARCH is set to: ${ARCH}"
   kube::log::status "IP_ADDRESS is set to: ${IP_ADDRESS}"
+  kube::log::status "HOSTNAME is set to: ${HOSTNAME}"
   kube::log::status "USE_CNI is set to: ${USE_CNI}"
   kube::log::status "USE_CONTAINERIZED is set to: ${USE_CONTAINERIZED}"
   kube::log::status "--------------------------------------------"
@@ -237,7 +239,7 @@ kube::multinode::start_k8s_master() {
       --cluster-domain=cluster.local \
       ${CNI_ARGS} \
       ${CONTAINERIZED_FLAG} \
-      --hostname-override=${IP_ADDRESS} \
+      --hostname-override=${HOSTNAME} \
       --v=2
 }
 
@@ -264,7 +266,7 @@ kube::multinode::start_k8s_worker() {
       --cluster-domain=cluster.local \
       ${CNI_ARGS} \
       ${CONTAINERIZED_FLAG} \
-      --hostname-override=${IP_ADDRESS} \
+      --hostname-override=${HOSTNAME} \
       --v=2
 }
 
