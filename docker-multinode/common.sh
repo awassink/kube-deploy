@@ -212,7 +212,7 @@ kube::multinode::start_k8s_master() {
   kube::log::status "Launching Kubernetes master components..."
 
   if [[ ! -d ${KUBE_CONFIG_DIR} ]]; then
-    mkdir ${KUBE_CONFIG_DIR}
+    mkdir -p ${KUBE_CONFIG_DIR}
   fi
 
   if [[ ! -f ${KUBE_CONFIG_DIR}/master-multi.json ]]; then
